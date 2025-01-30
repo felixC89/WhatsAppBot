@@ -2,18 +2,27 @@ const qrcode = require('qrcode-terminal');
 //const qrcode = require('qrcode');
 const { MessageMedia } = require('whatsapp-web.js');
 const { Client } = require('whatsapp-web.js');
+const {transcriptorAudio} = require('../WhatsAppBot/Application/Transcriptor');
+const path = require('path');
+require('dotenv').config();
 
 const client = new Client();
 
+const conteo = path.join(__dirname, 'Audios','Test','Conteo.mp3');
 
+(async()=> {
+    const data = await transcriptorAudio(conteo,
+         process.env.DEEPGRAM_API_KEY);
+    console.log(data);
+})()
 
-client.on('qr', qr => {
+/*client.on('qr', qr => {
     qrcode.generate(qr, {small: true});
-});
+});*/
 
-client.on('qr', qr => {
+/*client.on('qr', qr => {
     console.log('QR RECEIVED', qr);
-});
+});*/
 
 client.on('ready', () => {
     console.log('Cliente conectado!');
@@ -21,7 +30,7 @@ client.on('ready', () => {
 
 client.on('message', async (message) => {
 
-    if(message.body.toLowerCase().includes('hora'))
+    if(message.body.toLocaleLowerCase.includes('hora'))
     {
         const options = {
             hour: '2-digit',
@@ -34,7 +43,7 @@ client.on('message', async (message) => {
         return;
     }
 
-    if(message.body.toLowerCase().includes('dia') || message.body.toLowerCase().includes('día'))
+    if(message.body.toLocaleLowerCase().includes('dia') || message.body.toLocaleLowerCase().includes('día'))
     {
         const options = {
             year: 'numeric',
@@ -47,15 +56,12 @@ client.on('message', async (message) => {
         return;
     }
 
-	if (message.body.toLowerCase().includes('saludo') || message.body.toLowerCase().includes('hola') || message.body.toLowerCase().includes('amistad')) {
+	if (message.body.toLocaleLowerCase().includes('saludo') || message.body.toLocaleLowerCase().includes('hola') || message.body.toLocaleLowerCase().includes('amistad')) {
 		await message.reply('Hola soy un bot, mi creador esta ocupado ayudando a gohan a salvar la tierra!');
 
         const media = MessageMedia.fromFilePath('./imgs/help-gohan.png');
         await client.sendMessage(message.from, media);
 	}
-
-    
-
 
 });
 
