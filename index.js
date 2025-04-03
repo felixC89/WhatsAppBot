@@ -10,19 +10,19 @@ const client = new Client();
 
 const conteo = path.join(__dirname, 'Audios','Test','Conteo.mp3');
 
-(async()=> {
+/*(async()=> {
     const data = await transcriptorAudio(conteo,
          process.env.DEEPGRAM_API_KEY);
     console.log(data);
-})()
+})()*/
 
-/*client.on('qr', qr => {
+client.on('qr', qr => {
     qrcode.generate(qr, {small: true});
-});*/
+});
 
-/*client.on('qr', qr => {
+client.on('qr', qr => {
     console.log('QR RECEIVED', qr);
-});*/
+});
 
 client.on('ready', () => {
     console.log('Cliente conectado!');
@@ -30,7 +30,7 @@ client.on('ready', () => {
 
 client.on('message', async (message) => {
 
-    if(message.body.toLocaleLowerCase.includes('hora'))
+    if(message.body.toLocaleLowerCase().includes('hora'))
     {
         const options = {
             hour: '2-digit',
@@ -42,6 +42,19 @@ client.on('message', async (message) => {
         await message.reply(`La hora es: ${formattedDate}`);
         return;
     }
+
+    if(message.body.toLocaleLowerCase().includes('menu'))
+        {
+            const options = {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+              };
+              
+              const formattedDate = new Intl.DateTimeFormat('en-US', options).format(new Date());
+            await message.reply(`El Menu del dia de hoy es: Nachos endiablados y Alitas en salsa bufalo`);
+            return;
+        }
 
     if(message.body.toLocaleLowerCase().includes('dia') || message.body.toLocaleLowerCase().includes('día'))
     {

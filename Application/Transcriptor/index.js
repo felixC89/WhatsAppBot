@@ -8,7 +8,7 @@ async function transcriptorAudio(filename, _apikey){
         //url del proveedor con usuario github: https://console.deepgram.com/
         //costo por transcripcion: 3 transcripciones/centavo
 
-        // Espera 1.5 segundos antes de ejecutar la transcripción
+        // Espera 1.8 segundos antes de ejecutar la transcripción
         console.warn('Estableciendo conexión con el motor de transcripción...');
         await new Promise(resolve => setTimeout(resolve, 1800));
         const deepgram = createClient(_apikey);
